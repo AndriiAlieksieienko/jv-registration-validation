@@ -97,4 +97,60 @@ class RegistrationServiceImplTest {
         assertThrows(RegistrationException.class,
                 () -> registrationService.register(user));
     }
+
+    @Test
+    void register_nullPassword_notOk() {
+        User user = new User();
+        user.setLogin("User123");
+        user.setPassword(null);
+        user.setAge(20);
+
+        assertThrows(RegistrationException.class,
+                () -> registrationService.register(user));
+    }
+
+    @Test
+    void register_negativeAge_notOk() {
+        User user = new User();
+        user.setLogin("User123");
+        user.setPassword("123456");
+        user.setAge(-5);
+
+        assertThrows(RegistrationException.class,
+                () -> registrationService.register(user));
+    }
+
+    @Test
+    void register_ageExactly18_ok() {
+        User user = new User();
+        user.setLogin("User123");
+        user.setPassword("123456");
+        user.setAge(18);
+
+        User actual = registrationService.register(user);
+
+        assertEquals(user, actual);
+    }
+
+    @Test
+    void register_emptyLogin_notOk() {
+        User user = new User();
+        user.setLogin("");
+        user.setPassword("123456");
+        user.setAge(20);
+
+        assertThrows(RegistrationException.class,
+                () -> registrationService.register(user));
+    }
+
+    @Test
+    void register_emptyPassword_notOk() {
+        User user = new User();
+        user.setLogin("User123");
+        user.setPassword("");
+        user.setAge(20);
+
+        assertThrows(RegistrationException.class,
+                () -> registrationService.register(user));
+    }
 }
